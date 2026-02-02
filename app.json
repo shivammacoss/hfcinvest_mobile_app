@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/hcfinvest_logo.png",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": false,
     "splash": {
       "image": "./assets/hcfinvest_logo.png",
       "resizeMode": "contain",
@@ -27,8 +26,7 @@
         "foregroundImage": "./assets/hcfinvest_logo.png",
         "backgroundColor": "#000000"
       },
-      "edgeToEdgeEnabled": true,
-      "package": "com.hcfinvest.app"
+            "package": "com.hcfinvest.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
