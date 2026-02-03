@@ -268,11 +268,11 @@ const BuyChallengeScreen = ({ navigation }) => {
             <View style={styles.rulesGrid}>
               <View style={[styles.ruleItem, { backgroundColor: colors.bgSecondary }]}>
                 <Text style={[styles.ruleLabel, { color: colors.textMuted }]}>Daily Drawdown</Text>
-                <Text style={[styles.ruleValue, { color: '#ef4444' }]}>{selectedChallenge.rules?.maxDailyDrawdownPercent || 5}%</Text>
+                <Text style={[styles.ruleValue, { color: '#3b82f6' }]}>{selectedChallenge.rules?.maxDailyDrawdownPercent || 5}%</Text>
               </View>
               <View style={[styles.ruleItem, { backgroundColor: colors.bgSecondary }]}>
                 <Text style={[styles.ruleLabel, { color: colors.textMuted }]}>Max Drawdown</Text>
-                <Text style={[styles.ruleValue, { color: '#ef4444' }]}>{selectedChallenge.rules?.maxOverallDrawdownPercent || 10}%</Text>
+                <Text style={[styles.ruleValue, { color: '#3b82f6' }]}>{selectedChallenge.rules?.maxOverallDrawdownPercent || 10}%</Text>
               </View>
               {selectedChallenge.stepsCount > 0 && (
                 <View style={[styles.ruleItem, { backgroundColor: colors.bgSecondary }]}>
@@ -308,13 +308,13 @@ const BuyChallengeScreen = ({ navigation }) => {
                 <Ionicons name={selectedChallenge.rules?.stopLossMandatory ? 'checkmark-circle' : 'close-circle'} size={16} color={selectedChallenge.rules?.stopLossMandatory ? '#eab308' : colors.textMuted} />
                 <Text style={[styles.ruleToggleText, { color: selectedChallenge.rules?.stopLossMandatory ? '#eab308' : colors.textMuted }]}>Stop Loss Required</Text>
               </View>
-              <View style={[styles.ruleToggle, { backgroundColor: selectedChallenge.rules?.allowWeekendHolding ? '#22c55e20' : '#ef444420' }]}>
-                <Ionicons name={selectedChallenge.rules?.allowWeekendHolding ? 'checkmark-circle' : 'close-circle'} size={16} color={selectedChallenge.rules?.allowWeekendHolding ? '#22c55e' : '#ef4444'} />
-                <Text style={[styles.ruleToggleText, { color: selectedChallenge.rules?.allowWeekendHolding ? '#22c55e' : '#ef4444' }]}>Weekend Holding</Text>
+              <View style={[styles.ruleToggle, { backgroundColor: selectedChallenge.rules?.allowWeekendHolding ? '#22c55e20' : '#3b82f620' }]}>
+                <Ionicons name={selectedChallenge.rules?.allowWeekendHolding ? 'checkmark-circle' : 'close-circle'} size={16} color={selectedChallenge.rules?.allowWeekendHolding ? '#22c55e' : '#3b82f6'} />
+                <Text style={[styles.ruleToggleText, { color: selectedChallenge.rules?.allowWeekendHolding ? '#22c55e' : '#3b82f6' }]}>Weekend Holding</Text>
               </View>
-              <View style={[styles.ruleToggle, { backgroundColor: selectedChallenge.rules?.allowNewsTrading ? '#22c55e20' : '#ef444420' }]}>
-                <Ionicons name={selectedChallenge.rules?.allowNewsTrading ? 'checkmark-circle' : 'close-circle'} size={16} color={selectedChallenge.rules?.allowNewsTrading ? '#22c55e' : '#ef4444'} />
-                <Text style={[styles.ruleToggleText, { color: selectedChallenge.rules?.allowNewsTrading ? '#22c55e' : '#ef4444' }]}>News Trading</Text>
+              <View style={[styles.ruleToggle, { backgroundColor: selectedChallenge.rules?.allowNewsTrading ? '#22c55e20' : '#3b82f620' }]}>
+                <Ionicons name={selectedChallenge.rules?.allowNewsTrading ? 'checkmark-circle' : 'close-circle'} size={16} color={selectedChallenge.rules?.allowNewsTrading ? '#22c55e' : '#3b82f6'} />
+                <Text style={[styles.ruleToggleText, { color: selectedChallenge.rules?.allowNewsTrading ? '#22c55e' : '#3b82f6' }]}>News Trading</Text>
               </View>
             </View>
           </View>
@@ -340,7 +340,7 @@ const BuyChallengeScreen = ({ navigation }) => {
               <View style={[styles.walletInfo, { backgroundColor: colors.bgSecondary }]}>
                 <Ionicons name="wallet" size={16} color={colors.accent} />
                 <Text style={[styles.walletInfoText, { color: colors.textMuted }]}>Wallet Balance: </Text>
-                <Text style={[styles.walletInfoValue, { color: walletBalance >= selectedChallenge.challengeFee ? '#22c55e' : '#ef4444' }]}>${walletBalance.toFixed(2)}</Text>
+                <Text style={[styles.walletInfoValue, { color: walletBalance >= selectedChallenge.challengeFee ? '#22c55e' : '#3b82f6' }]}>${walletBalance.toFixed(2)}</Text>
               </View>
             </View>
           ) : (

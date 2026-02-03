@@ -255,7 +255,7 @@ const IBScreen = ({ navigation }) => {
                 'Easy withdrawal to your wallet'
               ].map((benefit, idx) => (
                 <View key={idx} style={styles.benefitRow}>
-                  <Ionicons name="chevron-forward" size={16} color="#dc2626" />
+                  <Ionicons name="chevron-forward" size={16} color='#3b82f6' />
                   <Text style={styles.benefitText}>{benefit}</Text>
                 </View>
               ))}
@@ -289,8 +289,8 @@ const IBScreen = ({ navigation }) => {
         {/* Rejected Status */}
         {isRejected && (
           <View style={styles.statusContainer}>
-            <View style={[styles.statusIconContainer, { backgroundColor: '#ef444430' }]}>
-              <Ionicons name="close-circle" size={48} color="#ef4444" />
+            <View style={[styles.statusIconContainer, { backgroundColor: '#3b82f630' }]}>
+              <Ionicons name="close-circle" size={48} color='#3b82f6' />
             </View>
             <Text style={[styles.statusTitle, { color: colors.textPrimary }]}>Application Rejected</Text>
             <Text style={[styles.statusSubtitle, { color: colors.textMuted }]}>Unfortunately, your IB application was not approved.</Text>
@@ -313,8 +313,8 @@ const IBScreen = ({ navigation }) => {
                 <Text style={[styles.statValue, { color: colors.textPrimary }]}>${ibProfile?.ibWalletBalance?.toFixed(2) || '0.00'}</Text>
               </View>
               <View style={[styles.statCard, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-                <View style={[styles.statIcon, { backgroundColor: '#dc262620' }]}>
-                  <Ionicons name="trending-up" size={20} color="#dc2626" />
+                <View style={[styles.statIcon, { backgroundColor: '#3b82f620' }]}>
+                  <Ionicons name="trending-up" size={20} color='#3b82f6' />
                 </View>
                 <Text style={[styles.statLabel, { color: colors.textMuted }]}>Total Earned</Text>
                 <Text style={[styles.statValue, { color: colors.textPrimary }]}>${ibProfile?.totalCommissionEarned?.toFixed(2) || '0.00'}</Text>
@@ -377,7 +377,7 @@ const IBScreen = ({ navigation }) => {
             {levelProgress?.nextLevel && (
               <View style={[styles.levelProgressCard, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
                 <View style={styles.levelProgressHeader}>
-                  <Ionicons name="ribbon" size={20} color="#dc2626" />
+                  <Ionicons name="ribbon" size={20} color='#3b82f6' />
                   <Text style={[styles.levelProgressTitle, { color: colors.textPrimary }]}>Commission Levels</Text>
                 </View>
                 <View style={styles.progressBarContainer}>
@@ -472,8 +472,8 @@ const IBScreen = ({ navigation }) => {
                         </View>
                         <View style={styles.commissionItemRight}>
                           <Text style={styles.commissionAmount}>${comm.commissionAmount?.toFixed(2)}</Text>
-                          <View style={[styles.commissionStatus, { backgroundColor: comm.status === 'CREDITED' ? '#22c55e20' : '#ef444420' }]}>
-                            <Text style={[styles.commissionStatusText, { color: comm.status === 'CREDITED' ? '#22c55e' : '#ef4444' }]}>{comm.status}</Text>
+                          <View style={[styles.commissionStatus, { backgroundColor: comm.status === 'CREDITED' ? '#22c55e20' : '#3b82f620' }]}>
+                            <Text style={[styles.commissionStatusText, { color: comm.status === 'CREDITED' ? '#22c55e' : '#3b82f6' }]}>{comm.status}</Text>
                           </View>
                         </View>
                       </View>
@@ -494,15 +494,15 @@ const IBScreen = ({ navigation }) => {
                   ) : (
                     downline.map((node, idx) => (
                       <View key={node._id || idx} style={[styles.downlineItem, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-                        <View style={[styles.downlineAvatar, { backgroundColor: node.isIB ? '#dc262630' : '#33333' }]}>
-                          <Text style={[styles.avatarText, { color: node.isIB ? '#dc2626' : '#888' }]}>{node.firstName?.charAt(0) || '?'}</Text>
+                        <View style={[styles.downlineAvatar, { backgroundColor: node.isIB ? '#3b82f630' : '#33333' }]}>
+                          <Text style={[styles.avatarText, { color: node.isIB ? '#3b82f6' : '#888' }]}>{node.firstName?.charAt(0) || '?'}</Text>
                         </View>
                         <View style={styles.downlineInfo}>
                           <Text style={[styles.downlineName, { color: colors.textPrimary }]}>{node.firstName || 'Unknown'}</Text>
                           <Text style={styles.downlineEmail}>{node.email}</Text>
                         </View>
-                        <View style={[styles.downlineBadge, { backgroundColor: node.isIB ? '#dc262620' : '#33333' }]}>
-                          <Text style={[styles.downlineBadgeText, { color: node.isIB ? '#dc2626' : '#888' }]}>
+                        <View style={[styles.downlineBadge, { backgroundColor: node.isIB ? '#3b82f620' : '#33333' }]}>
+                          <Text style={[styles.downlineBadgeText, { color: node.isIB ? '#3b82f6' : '#888' }]}>
                             {node.isIB ? 'IB' : 'User'} • L{(node.level || 0) + 1}
                           </Text>
                         </View>
@@ -570,14 +570,14 @@ const styles = StyleSheet.create({
   
   // Apply Container
   applyContainer: { padding: 20, alignItems: 'center' },
-  applyIconContainer: { width: 80, height: 80, borderRadius: 40, backgroundColor: '#dc262620', justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
+  applyIconContainer: { width: 80, height: 80, borderRadius: 40, backgroundColor: '#3b82f620', justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
   applyTitle: { fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 },
   applySubtitle: { color: '#888', fontSize: 14, textAlign: 'center', marginBottom: 20 },
   benefitsCard: { borderRadius: 16, padding: 16, width: '100%', marginBottom: 20 },
   benefitsTitle: { fontSize: 14, fontWeight: '600', marginBottom: 12 },
   benefitRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   benefitText: { color: '#888', fontSize: 13, flex: 1 },
-  applyBtn: { backgroundColor: '#dc2626', paddingHorizontal: 40, paddingVertical: 16, borderRadius: 12 },
+  applyBtn: { backgroundColor: '#3b82f6', paddingHorizontal: 40, paddingVertical: 16, borderRadius: 12 },
   applyBtnText: { color: '#000', fontSize: 16, fontWeight: 'bold' },
   btnDisabled: { opacity: 0.6 },
   
@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
   statusIconContainer: { width: 80, height: 80, borderRadius: 40, justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
   statusTitle: { fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 },
   statusSubtitle: { color: '#888', fontSize: 14, textAlign: 'center' },
-  rejectionReason: { color: '#ef4444', fontSize: 13, marginTop: 12, textAlign: 'center' },
+  rejectionReason: { color: '#3b82f6', fontSize: 13, marginTop: 12, textAlign: 'center' },
   
   // Stats Grid
   statsGrid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 16, gap: 10, marginBottom: 12 },
@@ -623,16 +623,16 @@ const styles = StyleSheet.create({
   progressBarContainer: {},
   progressBarLabels: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
   progressLabel: { color: '#888', fontSize: 12 },
-  progressPercent: { color: '#dc2626', fontSize: 12, fontWeight: '600' },
+  progressPercent: { color: '#3b82f6', fontSize: 12, fontWeight: '600' },
   progressBarBg: { height: 6, backgroundColor: '#222', borderRadius: 3, overflow: 'hidden' },
-  progressBarFill: { height: '100%', backgroundColor: '#dc2626', borderRadius: 3 },
+  progressBarFill: { height: '100%', backgroundColor: '#3b82f6', borderRadius: 3 },
   progressHint: { color: '#666', fontSize: 11, marginTop: 6 },
   
   // Tabs
   tabsScroll: { marginBottom: 12 },
   tabs: { flexDirection: 'row', paddingHorizontal: 16, gap: 8 },
   tab: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8 },
-  tabActive: { backgroundColor: '#dc2626' },
+  tabActive: { backgroundColor: '#3b82f6' },
   tabText: { color: '#888', fontSize: 12, fontWeight: '500' },
   tabTextActive: { color: '#000' },
   
@@ -654,8 +654,8 @@ const styles = StyleSheet.create({
   
   // Referral Item
   referralItem: { flexDirection: 'row', alignItems: 'center', borderRadius: 12, padding: 14, marginBottom: 8, borderWidth: 1 },
-  referralAvatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#dc262630', justifyContent: 'center', alignItems: 'center' },
-  avatarText: { color: '#dc2626', fontSize: 16, fontWeight: 'bold' },
+  referralAvatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#3b82f630', justifyContent: 'center', alignItems: 'center' },
+  avatarText: { color: '#3b82f6', fontSize: 16, fontWeight: 'bold' },
   referralInfo: { flex: 1, marginLeft: 12 },
   referralName: { fontSize: 14, fontWeight: '600' },
   referralEmail: { color: '#666', fontSize: 12, marginTop: 2 },
@@ -687,7 +687,7 @@ const styles = StyleSheet.create({
   withdrawBalanceValue: { color: '#22c55e', fontSize: 32, fontWeight: 'bold', marginTop: 8 },
   inputLabel: { color: '#888', fontSize: 12, marginBottom: 8 },
   input: { borderRadius: 12, padding: 16, fontSize: 16, borderWidth: 1, marginBottom: 16 },
-  withdrawBtn: { backgroundColor: '#dc2626', padding: 16, borderRadius: 12, alignItems: 'center' },
+  withdrawBtn: { backgroundColor: '#3b82f6', padding: 16, borderRadius: 12, alignItems: 'center' },
   withdrawBtnText: { color: '#000', fontSize: 16, fontWeight: 'bold' },
   pendingWithdrawal: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 16 },
   pendingWithdrawalText: { color: '#eab308', fontSize: 13 },

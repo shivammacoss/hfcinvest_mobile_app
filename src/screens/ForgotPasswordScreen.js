@@ -211,7 +211,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
           {/* Error Message */}
           {error ? (
             <View style={styles.errorContainer}>
-              <Ionicons name="alert-circle" size={16} color="#ef4444" />
+              <Ionicons name="alert-circle" size={16} color='#3b82f6' />
               <Text style={styles.errorText}>{error}</Text>
             </View>
           ) : null}
@@ -257,7 +257,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         {/* Icon */}
         <View style={styles.iconContainer}>
           <View style={styles.iconCircle}>
-            <Ionicons name="lock-open-outline" size={40} color="#dc2626" />
+            <Ionicons name="lock-open-outline" size={40} color='#3b82f6' />
           </View>
         </View>
 
@@ -283,7 +283,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         {/* Error Message */}
         {error ? (
           <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle" size={16} color="#ef4444" />
+            <Ionicons name="alert-circle" size={16} color='#3b82f6' />
             <Text style={styles.errorText}>{error}</Text>
           </View>
         ) : null}
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#dc262620',
+    backgroundColor: '#3b82f620',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -395,12 +395,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   errorText: {
-    color: '#ef4444',
+    color: '#3b82f6',
     fontSize: 14,
     marginLeft: 8,
   },
   button: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   loginLink: {
-    color: '#dc2626',
+    color: '#3b82f6',
     fontSize: 15,
     fontWeight: '600',
   },

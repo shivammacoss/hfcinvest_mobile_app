@@ -492,7 +492,7 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>KYC Verification</Text>
-            <View style={[styles.mandatoryBadge, { backgroundColor: '#ef444420' }]}>
+            <View style={[styles.mandatoryBadge, { backgroundColor: '#3b82f620' }]}>
               <Text style={styles.mandatoryText}>Mandatory</Text>
             </View>
           </View>
@@ -527,15 +527,15 @@ const ProfileScreen = ({ navigation }) => {
             
             {!kycStatus && (
               <View style={[styles.kycWarning, { backgroundColor: '#ef444410' }]}>
-                <Ionicons name="warning" size={16} color="#ef4444" />
-                <Text style={styles.kycWarningText}>Complete KYC to access all features including withdrawals</Text>
+                <Ionicons name="warning" size={16} color='#ef4444' />
+                <Text style={[styles.kycWarningText, { color: '#ef4444' }]}>Complete KYC to access all features including withdrawals</Text>
               </View>
             )}
             
             {kycStatus?.status === 'rejected' && kycStatus?.rejectionReason && (
               <View style={[styles.kycWarning, { backgroundColor: '#ef444410' }]}>
-                <Ionicons name="close-circle" size={16} color="#ef4444" />
-                <Text style={styles.kycWarningText}>Reason: {kycStatus.rejectionReason}</Text>
+                <Ionicons name="close-circle" size={16} color='#ef4444' />
+                <Text style={[styles.kycWarningText, { color: '#ef4444' }]}>Reason: {kycStatus.rejectionReason}</Text>
               </View>
             )}
             
@@ -561,7 +561,7 @@ const ProfileScreen = ({ navigation }) => {
           
           <TouchableOpacity style={[styles.actionItem, { backgroundColor: colors.bgCard }]} onPress={() => setShowEditModal(true)}>
             <View style={styles.actionLeft}>
-              <View style={[styles.actionIcon, { backgroundColor: '#dc262620' }]}>
+              <View style={[styles.actionIcon, { backgroundColor: '#3b82f620' }]}>
                 <Ionicons name="create-outline" size={20} color={colors.accent} />
               </View>
               <Text style={[styles.actionText, { color: colors.textPrimary }]}>Edit Profile</Text>
@@ -571,7 +571,7 @@ const ProfileScreen = ({ navigation }) => {
           
           <TouchableOpacity style={[styles.actionItem, { backgroundColor: colors.bgCard }]} onPress={() => setShowPasswordModal(true)}>
             <View style={styles.actionLeft}>
-              <View style={[styles.actionIcon, { backgroundColor: '#dc262620' }]}>
+              <View style={[styles.actionIcon, { backgroundColor: '#3b82f620' }]}>
                 <Ionicons name="lock-closed-outline" size={20} color={colors.accent} />
               </View>
               <Text style={[styles.actionText, { color: colors.textPrimary }]}>Change Password</Text>
@@ -846,7 +846,7 @@ const styles = StyleSheet.create({
   
   profileCard: { alignItems: 'center', padding: 30, margin: 16, borderRadius: 20 },
   avatarContainer: { position: 'relative' },
-  avatar: { width: 90, height: 90, borderRadius: 45, backgroundColor: '#dc2626', justifyContent: 'center', alignItems: 'center' },
+  avatar: { width: 90, height: 90, borderRadius: 45, backgroundColor: '#3b82f6', justifyContent: 'center', alignItems: 'center' },
   avatarImage: { width: 90, height: 90, borderRadius: 45, backgroundColor: '#333' },
   avatarText: { color: '#000', fontSize: 28, fontWeight: 'bold' },
   avatarEditBtn: { position: 'absolute', bottom: 0, right: 0, width: 28, height: 28, borderRadius: 14, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#000' },
@@ -874,14 +874,14 @@ const styles = StyleSheet.create({
   inputLabel: { fontSize: 12, marginBottom: 8, marginTop: 16 },
   input: { borderRadius: 12, padding: 16, fontSize: 16 },
   
-  submitBtn: { backgroundColor: '#dc2626', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 24 },
+  submitBtn: { backgroundColor: '#3b82f6', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 24 },
   submitBtnDisabled: { opacity: 0.6 },
   submitBtnText: { color: '#000', fontSize: 16, fontWeight: 'bold' },
   
   // KYC Section Styles
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 },
   mandatoryBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  mandatoryText: { color: '#ef4444', fontSize: 11, fontWeight: '600' },
+  mandatoryText: { color: '#3b82f6', fontSize: 11, fontWeight: '600' },
   
   kycCard: { borderRadius: 16, padding: 16, borderWidth: 2 },
   kycHeader: { flexDirection: 'row', alignItems: 'center' },
@@ -893,7 +893,7 @@ const styles = StyleSheet.create({
   kycStatusText: { fontSize: 13, fontWeight: '500' },
   
   kycWarning: { flexDirection: 'row', alignItems: 'center', padding: 12, borderRadius: 10, marginTop: 12, gap: 8 },
-  kycWarningText: { color: '#ef4444', fontSize: 12, flex: 1 },
+  kycWarningText: { color: '#3b82f6', fontSize: 12, flex: 1 },
   kycSuccess: { flexDirection: 'row', alignItems: 'center', padding: 12, borderRadius: 10, marginTop: 12, gap: 8 },
   kycSuccessText: { color: '#22c55e', fontSize: 12, flex: 1 },
   kycPending: { flexDirection: 'row', alignItems: 'center', padding: 12, borderRadius: 10, marginTop: 12, gap: 8 },

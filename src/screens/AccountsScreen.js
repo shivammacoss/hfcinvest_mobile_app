@@ -595,8 +595,8 @@ const AccountsScreen = ({ navigation, route }) => {
   const renderChallengeAccount = (account) => (
     <View key={account._id} style={[styles.accountCard, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
       <View style={styles.accountHeader}>
-        <View style={[styles.accountIconContainer, { backgroundColor: '#dc262620' }]}>
-          <Ionicons name="trophy-outline" size={24} color="#dc2626" />
+        <View style={[styles.accountIconContainer, { backgroundColor: '#3b82f620' }]}>
+          <Ionicons name="trophy-outline" size={24} color='#3b82f6' />
         </View>
         <View style={styles.accountInfo}>
           <Text style={[styles.accountId, { color: colors.textPrimary }]}>{account.accountId}</Text>
@@ -628,19 +628,19 @@ const AccountsScreen = ({ navigation, route }) => {
       <View style={[styles.challengeProgress, { backgroundColor: colors.bgSecondary }]}>
         <View style={styles.progressRow}>
           <Text style={[styles.progressLabel, { color: colors.textMuted }]}>Daily Drawdown</Text>
-          <Text style={[styles.progressValue, { color: colors.textPrimary }, (account.currentDailyDrawdownPercent || 0) > (account.challengeId?.rules?.maxDailyDrawdownPercent || account.maxDailyDrawdownPercent || 5) * 0.8 && { color: '#ef4444' }]}>
+          <Text style={[styles.progressValue, { color: colors.textPrimary }, (account.currentDailyDrawdownPercent || 0) > (account.challengeId?.rules?.maxDailyDrawdownPercent || account.maxDailyDrawdownPercent || 5) * 0.8 && { color: '#3b82f6' }]}>
             {(account.currentDailyDrawdownPercent || 0).toFixed(2)}% / {account.challengeId?.rules?.maxDailyDrawdownPercent || account.maxDailyDrawdownPercent || 5}%
           </Text>
         </View>
         <View style={styles.progressRow}>
           <Text style={[styles.progressLabel, { color: colors.textMuted }]}>Overall Drawdown</Text>
-          <Text style={[styles.progressValue, { color: colors.textPrimary }, (account.currentOverallDrawdownPercent || 0) > (account.challengeId?.rules?.maxOverallDrawdownPercent || account.maxOverallDrawdownPercent || 10) * 0.8 && { color: '#ef4444' }]}>
+          <Text style={[styles.progressValue, { color: colors.textPrimary }, (account.currentOverallDrawdownPercent || 0) > (account.challengeId?.rules?.maxOverallDrawdownPercent || account.maxOverallDrawdownPercent || 10) * 0.8 && { color: '#3b82f6' }]}>
             {(account.currentOverallDrawdownPercent || 0).toFixed(2)}% / {account.challengeId?.rules?.maxOverallDrawdownPercent || account.maxOverallDrawdownPercent || 10}%
           </Text>
         </View>
         <View style={styles.progressRow}>
           <Text style={[styles.progressLabel, { color: colors.textMuted }]}>Profit Target</Text>
-          <Text style={[styles.progressValue, { color: (account.currentProfitPercent || 0) >= 0 ? '#22c55e' : '#ef4444' }]}>
+          <Text style={[styles.progressValue, { color: (account.currentProfitPercent || 0) >= 0 ? '#22c55e' : '#3b82f6' }]}>
             {(account.currentProfitPercent || 0).toFixed(2)}% / {account.challengeId?.rules?.profitTargetPhase1Percent || account.profitTargetPercent || 10}%
           </Text>
         </View>
@@ -648,7 +648,7 @@ const AccountsScreen = ({ navigation, route }) => {
 
       {account.status === 'ACTIVE' && (
         <TouchableOpacity 
-          style={[styles.tradeBtn, { backgroundColor: '#dc2626' }]}
+          style={[styles.tradeBtn, { backgroundColor: '#3b82f6' }]}
           onPress={() => selectChallengeAccountForTrading(account)}
         >
           <Ionicons name="trending-up" size={18} color="#fff" />
@@ -661,9 +661,9 @@ const AccountsScreen = ({ navigation, route }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'ACTIVE': return '#22c55e';
-      case 'PASSED': return '#dc2626';
-      case 'FAILED': return '#ef4444';
-      case 'FUNDED': return '#dc2626';
+      case 'PASSED': return '#3b82f6';
+      case 'FAILED': return '#3b82f6';
+      case 'FUNDED': return '#3b82f6';
       default: return '#888';
     }
   };
@@ -1303,13 +1303,13 @@ const styles = StyleSheet.create({
     borderColor: '#000000',
   },
   primaryCard: {
-    borderColor: '#dc2626',
+    borderColor: '#3b82f6',
     borderWidth: 2,
   },
   primaryBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
@@ -1331,7 +1331,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#dc262620',
+    backgroundColor: '#3b82f620',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -1383,7 +1383,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
     paddingVertical: 12,
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     borderRadius: 10,
   },
   depositBtnText: {
@@ -1415,7 +1415,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   setPrimaryBtnText: {
-    color: '#dc2626',
+    color: '#3b82f6',
     fontSize: 14,
   },
   tradeBtn: {
@@ -1424,7 +1424,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
     paddingVertical: 14,
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     borderRadius: 10,
   },
   tradeBtnText: {
@@ -1453,7 +1453,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   tabActive: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
   },
   tabText: {
     color: '#888',
@@ -1497,7 +1497,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   walletBalanceValue: {
-    color: '#dc2626',
+    color: '#3b82f6',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -1519,7 +1519,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#dc262620',
+    backgroundColor: '#3b82f620',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -1547,7 +1547,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   buyBtnSmall: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
@@ -1668,7 +1668,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#dc262620',
+    backgroundColor: '#3b82f620',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -1711,7 +1711,7 @@ const styles = StyleSheet.create({
   },
   createAccountBtn: {
     flex: 1,
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -1753,7 +1753,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   transferValueGold: {
-    color: '#dc2626',
+    color: '#3b82f6',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -1771,7 +1771,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   transferSubmitBtn: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -1783,7 +1783,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   withdrawSubmitBtn: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -1807,8 +1807,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   accountSelectCardActive: {
-    backgroundColor: '#dc2626',
-    borderColor: '#dc2626',
+    backgroundColor: '#3b82f6',
+    borderColor: '#3b82f6',
   },
   accountSelectId: {
     fontSize: 14,

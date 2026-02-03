@@ -1,25 +1,24 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
 
-// Dark theme (Venta Black / Red with Multi-color accents)
-// Ventablack: #0a0a0a (not pure black #000000)
+// Dark theme (Dark Blue theme)
 const darkTheme = {
   name: 'Dark',
   isDark: true,
   colors: {
-    primary: '#dc2626',
-    primaryHover: '#b91c1c',
-    secondary: '#ef4444',
-    accent: '#dc2626',
-    bgPrimary: '#0a0a0a',
-    bgSecondary: '#101010',
-    bgCard: '#141414',
-    bgHover: '#1c1c1c',
+    primary: '#3b82f6',
+    primaryHover: '#2563eb',
+    secondary: '#60a5fa',
+    accent: '#3b82f6',
+    bgPrimary: '#0f172a',
+    bgSecondary: '#1e293b',
+    bgCard: '#1e293b',
+    bgHover: '#334155',
     textPrimary: '#ffffff',
-    textSecondary: '#b0b0b0',
-    textMuted: '#707070',
-    border: '#1e1e1e',
-    borderLight: '#2a2a2a',
+    textSecondary: '#94a3b8',
+    textMuted: '#64748b',
+    border: '#334155',
+    borderLight: '#475569',
     success: '#22c55e',
     error: '#ef4444',
     warning: '#f59e0b',
@@ -28,8 +27,8 @@ const darkTheme = {
     sellColor: '#ef4444',
     profitColor: '#22c55e',
     lossColor: '#ef4444',
-    tabBarBg: '#0a0a0a',
-    cardBg: '#141414',
+    tabBarBg: '#0f172a',
+    cardBg: '#1e293b',
     // Multi-color accents
     purple: '#a855f7',
     cyan: '#06b6d4',

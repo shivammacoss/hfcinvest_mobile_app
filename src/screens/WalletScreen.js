@@ -335,13 +335,13 @@ const WalletScreen = ({ navigation }) => {
       case 'Approved': 
       case 'APPROVED': 
       case 'Completed': 
-        return '#dc2626';
+        return '#3b82f6';
       case 'Pending': 
       case 'PENDING': 
-        return '#dc2626';
+        return '#3b82f6';
       case 'Rejected': 
       case 'REJECTED': 
-        return '#dc2626';
+        return '#3b82f6';
       default: return '#666';
     }
   };
@@ -909,10 +909,10 @@ const styles = StyleSheet.create({
   balanceAmount: { fontSize: 36, fontWeight: 'bold', marginTop: 8 },
   
   actionButtons: { flexDirection: 'row', gap: 12, marginTop: 24 },
-  depositBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: '#dc2626', paddingVertical: 14, borderRadius: 12 },
+  depositBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: '#3b82f6', paddingVertical: 14, borderRadius: 12 },
   depositBtnText: { color: '#000', fontSize: 16, fontWeight: '600' },
   withdrawBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, paddingVertical: 14, borderRadius: 12 },
-  withdrawBtnText: { color: '#dc2626', fontSize: 16, fontWeight: '600' },
+  withdrawBtnText: { color: '#3b82f6', fontSize: 16, fontWeight: '600' },
   
   transactionsSection: { padding: 16 },
   sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 16 },
@@ -940,28 +940,28 @@ const styles = StyleSheet.create({
   
   methodsScroll: { marginTop: 8 },
   methodCard: { paddingHorizontal: 20, paddingVertical: 12, borderRadius: 12, marginRight: 8, borderWidth: 1 },
-  methodCardActive: { backgroundColor: '#dc2626', borderColor: '#dc2626' },
+  methodCardActive: { backgroundColor: '#3b82f6', borderColor: '#3b82f6' },
   methodName: { fontSize: 14, fontWeight: '500' },
   
   availableBalance: { padding: 16, borderRadius: 12, marginBottom: 8, borderWidth: 1 },
   availableLabel: { color: '#666', fontSize: 12 },
-  availableAmount: { color: '#dc2626', fontSize: 24, fontWeight: 'bold', marginTop: 4 },
+  availableAmount: { color: '#3b82f6', fontSize: 24, fontWeight: 'bold', marginTop: 4 },
   
-  submitBtn: { backgroundColor: '#dc2626', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 24 },
-  withdrawSubmitBtn: { backgroundColor: '#dc2626' },
+  submitBtn: { backgroundColor: '#3b82f6', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 24 },
+  withdrawSubmitBtn: { backgroundColor: '#3b82f6' },
   submitBtnDisabled: { opacity: 0.6 },
   submitBtnText: { color: '#000', fontSize: 16, fontWeight: 'bold' },
   
   // Currency selection styles
   currencyCard: { paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12, marginRight: 8, alignItems: 'center', minWidth: 60, borderWidth: 1 },
-  currencyCardActive: { backgroundColor: '#dc2626' },
+  currencyCardActive: { backgroundColor: '#3b82f6' },
   currencySymbol: { fontSize: 18, fontWeight: 'bold' },
   currencyName: { color: '#666', fontSize: 10, marginTop: 2 },
   
   // Conversion box styles
-  conversionBox: { backgroundColor: '#dc262620', borderWidth: 1, borderColor: '#dc262650', borderRadius: 12, padding: 16, marginTop: 12, alignItems: 'center' },
+  conversionBox: { backgroundColor: '#3b82f620', borderWidth: 1, borderColor: '#3b82f650', borderRadius: 12, padding: 16, marginTop: 12, alignItems: 'center' },
   conversionLabel: { color: '#666', fontSize: 12 },
-  conversionAmount: { color: '#dc2626', fontSize: 24, fontWeight: 'bold', marginTop: 4 },
+  conversionAmount: { color: '#3b82f6', fontSize: 24, fontWeight: 'bold', marginTop: 4 },
   conversionRate: { color: '#666', fontSize: 11, marginTop: 8 },
   
   // Method details styles

@@ -121,18 +121,18 @@ const DashboardScreen = () => {
 
   const getImpactColor = (impact) => {
     switch (impact) {
-      case 'high': return '#dc2626';
-      case 'medium': return '#dc2626';
-      case 'low': return '#dc2626';
+      case 'high': return '#3b82f6';
+      case 'medium': return '#3b82f6';
+      case 'low': return '#3b82f6';
       default: return '#666';
     }
   };
 
   const quickActions = [
-    { id: 'accounts', icon: 'wallet-outline', label: 'Accounts', screen: 'Accounts', color: '#dc2626' },
-    { id: 'wallet', icon: 'card-outline', label: 'Wallet', screen: 'Wallet', color: '#dc2626' },
-    { id: 'copy', icon: 'copy-outline', label: 'Copy Trade', screen: 'CopyTrading', color: '#dc2626' },
-    { id: 'ib', icon: 'people-outline', label: 'IB Program', screen: 'IB', color: '#dc2626' },
+    { id: 'accounts', icon: 'wallet-outline', label: 'Accounts', screen: 'Accounts', color: '#3b82f6' },
+    { id: 'wallet', icon: 'card-outline', label: 'Wallet', screen: 'Wallet', color: '#3b82f6' },
+    { id: 'copy', icon: 'copy-outline', label: 'Copy Trade', screen: 'CopyTrading', color: '#3b82f6' },
+    { id: 'ib', icon: 'people-outline', label: 'IB Program', screen: 'IB', color: '#3b82f6' },
   ];
 
   return (
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   liveIndicator: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ef444420',
+    backgroundColor: '#3b82f620',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
@@ -284,11 +284,11 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#ef4444',
+    backgroundColor: '#3b82f6',
     marginRight: 4,
   },
   liveText: {
-    color: '#ef4444',
+    color: '#3b82f6',
     fontSize: 10,
     fontWeight: '700',
   },
@@ -323,13 +323,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   newsCategory: {
-    backgroundColor: '#dc262620',
+    backgroundColor: '#3b82f620',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
   },
   newsCategoryText: {
-    color: '#dc2626',
+    color: '#3b82f6',
     fontSize: 11,
     fontWeight: '600',
   },

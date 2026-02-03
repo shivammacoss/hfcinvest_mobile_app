@@ -161,7 +161,7 @@ const SignupScreen = ({ navigation }) => {
       style={styles.container} 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
       <ScrollView 
         style={styles.scrollView} 
         contentContainerStyle={styles.content}
@@ -230,7 +230,7 @@ const SignupScreen = ({ navigation }) => {
               disabled={sendingOtp || resendTimer > 0}
             >
               {sendingOtp ? (
-                <ActivityIndicator color="#dc2626" size="small" />
+                <ActivityIndicator color='#3b82f6' size="small" />
               ) : (
                 <Text style={[styles.resendText, resendTimer > 0 && styles.resendTextDisabled]}>
                   {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : 'Resend OTP'}
@@ -243,7 +243,7 @@ const SignupScreen = ({ navigation }) => {
               style={styles.backButton}
               onPress={handleBack}
             >
-              <Ionicons name="arrow-back" size={20} color="#dc2626" />
+              <Ionicons name="arrow-back" size={20} color='#3b82f6' />
               <Text style={styles.backButtonText}>Back to signup</Text>
             </TouchableOpacity>
           </>
@@ -344,7 +344,7 @@ const SignupScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#0f172a',
   },
   scrollView: {
     flex: 1,
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 60,
     height: 60,
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: '#000000',
+    backgroundColor: '#0f172a',
     borderRadius: 12,
     padding: 4,
     marginBottom: 32,
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeTab: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
   },
   tabText: {
     color: '#666',
@@ -422,9 +422,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#000000',
+    backgroundColor: '#0f172a',
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#0f172a',
     borderRadius: 12,
     marginBottom: 16,
     paddingHorizontal: 16,
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   button: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#3b82f6',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#0f172a',
   },
   dividerText: {
     color: '#666',
@@ -479,9 +479,9 @@ const styles = StyleSheet.create({
   socialButton: {
     width: 56,
     height: 56,
-    backgroundColor: '#000000',
+    backgroundColor: '#0f172a',
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#0f172a',
     borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   termsLink: {
-    color: '#dc2626',
+    color: '#3b82f6',
   },
   signinContainer: {
     flexDirection: 'row',
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   signinLink: {
-    color: '#dc2626',
+    color: '#3b82f6',
     fontSize: 15,
     fontWeight: '600',
   },
@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   resendText: {
-    color: '#dc2626',
+    color: '#3b82f6',
     fontSize: 15,
     fontWeight: '600',
   },
@@ -535,7 +535,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   backButtonText: {
-    color: '#dc2626',
+    color: '#3b82f6',
     fontSize: 15,
     fontWeight: '500',
   },
