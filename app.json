@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/hcfinvest_logo.png",
     "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/hcfinvest_logo.png",
       "resizeMode": "contain",
@@ -26,14 +27,15 @@
         "foregroundImage": "./assets/hcfinvest_logo.png",
         "backgroundColor": "#000000"
       },
-            "package": "com.hcfinvest.app"
+      "edgeToEdgeEnabled": true,
+      "package": "com.hcfinvest.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "806ce448-a93e-4075-b734-25e82cdfadec"
+        "projectId": "5a25aefc-a243-492b-b49c-15b17cd13671"
       }
     },
     "owner": "shivam92388",

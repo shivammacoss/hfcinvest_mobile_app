@@ -1313,6 +1313,26 @@ const HomeTab = ({ navigation }) => {
         </View>
       )}
 
+      {/* No Account Card - When user has no accounts */}
+      {!ctx.isChallengeMode && !ctx.selectedAccount && (
+        <View style={[styles.accountCard, { backgroundColor: colors.bgCard, borderColor: '#dc2626', borderWidth: 2 }]}>
+          <View style={styles.noAccountContainer}>
+            <View style={[styles.noAccountIconContainer, { backgroundColor: colors.primary + '20' }]}>
+              <Ionicons name="briefcase-outline" size={32} color={colors.primary} />
+            </View>
+            <Text style={[styles.noAccountTitle, { color: colors.textPrimary }]}>No Trading Account</Text>
+            <Text style={[styles.noAccountSubtitle, { color: colors.textMuted }]}>Create your first trading account to start trading</Text>
+            <TouchableOpacity 
+              style={[styles.createAccountBtn, { backgroundColor: colors.primary }]}
+              onPress={() => parentNav?.navigate('Accounts')}
+            >
+              <Ionicons name="add-circle-outline" size={20} color="#fff" />
+              <Text style={styles.createAccountBtnText}>Create Account</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
       {/* Regular Account Card - When not in challenge mode */}
       {!ctx.isChallengeMode && ctx.selectedAccount && (
         <View style={[styles.accountCard, { backgroundColor: colors.bgCard, borderColor: '#dc2626', borderWidth: 2 }]}>
@@ -4402,6 +4422,45 @@ const styles = StyleSheet.create({
   },
   changeAccountBtnText: {
     fontSize: 15,
+    fontWeight: '600',
+  },
+  
+  // No Account Empty State
+  noAccountContainer: {
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  noAccountIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  noAccountTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  noAccountSubtitle: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
+  createAccountBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+  },
+  createAccountBtnText: {
+    color: '#fff',
+    fontSize: 16,
     fontWeight: '600',
   },
   

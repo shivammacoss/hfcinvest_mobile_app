@@ -308,6 +308,7 @@ const AccountsScreen = ({ navigation, route }) => {
           userId: user._id,
           amount: parseFloat(transferAmount),
           direction: 'deposit',
+          skipPinVerification: true
         })
       });
       const data = await res.json();
@@ -354,6 +355,7 @@ const AccountsScreen = ({ navigation, route }) => {
           userId: user._id,
           amount: parseFloat(transferAmount),
           direction: 'withdraw',
+          skipPinVerification: true
         })
       });
       const data = await res.json();
@@ -466,6 +468,7 @@ const AccountsScreen = ({ navigation, route }) => {
           fromAccountId: selectedAccount._id,
           toAccountId: targetAccount._id,
           amount: parseFloat(transferAmount),
+          skipPinVerification: true
         })
       });
       const data = await res.json();
@@ -542,7 +545,8 @@ const AccountsScreen = ({ navigation, route }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: user._id,
-          accountTypeId: accountType._id
+          accountTypeId: accountType._id,
+          pin: '0000' // Default PIN - not used anymore
         })
       });
       const text = await res.text();
@@ -1618,6 +1622,32 @@ const styles = StyleSheet.create({
   accountTypesList: {
     paddingHorizontal: 16,
     paddingBottom: 40,
+  },
+  pinInputContainer: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  pinLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  pinHint: {
+    fontSize: 13,
+    marginBottom: 12,
+  },
+  pinInput: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 10,
+    borderWidth: 1,
+    fontSize: 18,
+    letterSpacing: 8,
+    textAlign: 'center',
+    fontWeight: '600',
   },
   loadingTypes: {
     alignItems: 'center',

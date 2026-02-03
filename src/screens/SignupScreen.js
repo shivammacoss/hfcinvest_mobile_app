@@ -24,12 +24,10 @@ const AUTH_URL = `${API_URL}/auth`;
 const SignupScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [otpRequired, setOtpRequired] = useState(false);
-  const [otpStep, setOtpStep] = useState(false);
+  const [step, setStep] = useState(1); // 1 = form, 2 = OTP verification
   const [otp, setOtp] = useState('');
-  const [otpVerified, setOtpVerified] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
-  const [verifyingOtp, setVerifyingOtp] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -38,152 +36,124 @@ const SignupScreen = ({ navigation }) => {
     password: '',
   });
 
-  // Check if OTP is required on mount
+  // Resend timer countdown
   useEffect(() => {
-    const checkOtpSettings = async () => {
-      try {
-        const res = await fetch(`${API_URL}/auth/otp-settings`);
-        const data = await res.json();
-        if (data.success) {
-          setOtpRequired(data.otpEnabled);
-        }
-      } catch (error) {
-        console.error('Error checking OTP settings:', error);
-      }
-    };
-    checkOtpSettings();
-  }, []);
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
 
-  // Send OTP
-  const handleSendOtp = async () => {
-    if (!formData.email || !formData.firstName) {
-      Alert.alert('Error', 'Please enter your name and email first');
+  // Step 1: Send OTP to email
+  const handleSendOTP = async () => {
+    // Validate form
+    if (!formData.firstName.trim()) {
+      Alert.alert('Error', 'Please enter your name');
+      return;
+    }
+    if (!formData.email.trim()) {
+      Alert.alert('Error', 'Please enter your email');
+      return;
+    }
+    if (!formData.phone.trim()) {
+      Alert.alert('Error', 'Please enter your phone number');
+      return;
+    }
+    if (!formData.password || formData.password.length < 6) {
+      Alert.alert('Error', 'Password must be at least 6 characters');
       return;
     }
 
     setSendingOtp(true);
     try {
-      const res = await fetch(`${API_URL}/auth/send-otp`, {
+      const res = await fetch(`${AUTH_URL}/signup/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, firstName: formData.firstName })
+        body: JSON.stringify({ email: formData.email })
       });
       const data = await res.json();
 
-      if (data.success) {
-        if (data.otpRequired) {
-          setOtpStep(true);
-          Alert.alert('OTP Sent', 'Please check your email for the verification code');
-        } else {
-          setOtpVerified(true);
-        }
+      if (res.ok && data.success) {
+        setStep(2);
+        setResendTimer(60); // 60 seconds before resend
+        Alert.alert('OTP Sent', 'Please check your email for the verification code');
       } else {
         Alert.alert('Error', data.message || 'Failed to send OTP');
       }
     } catch (error) {
-      Alert.alert('Error', 'Error sending OTP');
+      Alert.alert('Error', 'Error sending OTP. Please try again.');
     }
     setSendingOtp(false);
   };
 
-  // Verify OTP and auto-create account
-  const handleVerifyOtp = async () => {
+  // Resend OTP
+  const handleResendOTP = async () => {
+    if (resendTimer > 0) return;
+
+    setSendingOtp(true);
+    try {
+      const res = await fetch(`${AUTH_URL}/signup/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email })
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setResendTimer(60);
+        Alert.alert('OTP Resent', 'Please check your email for the new verification code');
+      } else {
+        Alert.alert('Error', data.message || 'Failed to resend OTP');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Error resending OTP');
+    }
+    setSendingOtp(false);
+  };
+
+  // Step 2: Verify OTP and create account
+  const handleVerifyOTP = async () => {
     if (!otp || otp.length !== 6) {
       Alert.alert('Error', 'Please enter a valid 6-digit OTP');
       return;
     }
 
-    setVerifyingOtp(true);
+    setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/auth/verify-otp`, {
+      const signupData = {
+        ...formData,
+        otp
+      };
+
+      const res = await fetch(`${AUTH_URL}/signup/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, otp })
+        body: JSON.stringify(signupData)
       });
       const data = await res.json();
 
-      if (data.success) {
-        // OTP verified - now automatically create the account
-        setOtpVerified(true);
-        setOtpStep(false);
-        
-        // Auto-create account after email verification
-        setLoading(true);
-        try {
-          const signupRes = await fetch(`${AUTH_URL}/signup`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              ...formData,
-              otpVerified: true
-            }),
-          });
-          const signupData = await signupRes.json();
-          
-          if (!signupRes.ok) {
-            throw new Error(signupData.message || 'Signup failed');
-          }
-          
-          // Account created successfully - redirect to login
-          Alert.alert(
-            'Account Created!', 
-            'Your account has been created successfully. Please login to continue.',
-            [{ text: 'OK', onPress: () => navigation.replace('Login') }]
-          );
-        } catch (signupError) {
-          Alert.alert('Error', signupError.message);
-        } finally {
-          setLoading(false);
+      if (res.ok && data.success) {
+        // Store user data and token
+        await SecureStore.setItemAsync('user', JSON.stringify(data.user));
+        if (data.token) {
+          await SecureStore.setItemAsync('token', data.token);
         }
+        
+        // Navigate to MainTrading
+        navigation.replace('MainTrading');
       } else {
-        Alert.alert('Error', data.message || 'Invalid OTP');
+        Alert.alert('Error', data.message || 'OTP verification failed');
       }
     } catch (error) {
-      Alert.alert('Error', 'Error verifying OTP');
+      Alert.alert('Error', 'Error verifying OTP. Please try again.');
     }
-    setVerifyingOtp(false);
+    setLoading(false);
   };
 
-  const handleSignup = async () => {
-    if (!formData.firstName || !formData.email || !formData.password) {
-      Alert.alert('Error', 'Please fill in all required fields');
-      return;
-    }
-
-    // If OTP is required and not verified, send OTP first
-    if (otpRequired && !otpVerified) {
-      await handleSendOtp();
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await fetch(`${AUTH_URL}/signup`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          otpVerified: otpVerified
-        }),
-      });
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Signup failed');
-      }
-      
-      // Store user data and navigate to MainTrading
-      await SecureStore.setItemAsync('user', JSON.stringify(data.user));
-      if (data.token) {
-        await SecureStore.setItemAsync('token', data.token);
-      }
-      
-      navigation.replace('MainTrading');
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    } finally {
-      setLoading(false);
-    }
+  // Go back to form
+  const handleBack = () => {
+    setStep(1);
+    setOtp('');
   };
 
   return (
@@ -220,7 +190,7 @@ const SignupScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {otpStep ? (
+        {step === 2 ? (
           <>
             {/* OTP Verification Screen */}
             <Text style={styles.title}>Verify Email</Text>
@@ -242,34 +212,36 @@ const SignupScreen = ({ navigation }) => {
 
             {/* Verify OTP Button */}
             <TouchableOpacity 
-              style={[styles.button, verifyingOtp && styles.buttonDisabled]}
-              onPress={handleVerifyOtp}
-              disabled={verifyingOtp}
+              style={[styles.button, loading && styles.buttonDisabled]}
+              onPress={handleVerifyOTP}
+              disabled={loading}
             >
-              {verifyingOtp ? (
+              {loading ? (
                 <ActivityIndicator color="#000" />
               ) : (
-                <Text style={styles.buttonText}>Verify OTP</Text>
+                <Text style={styles.buttonText}>Verify & Create Account</Text>
               )}
             </TouchableOpacity>
 
             {/* Resend OTP */}
             <TouchableOpacity 
-              style={styles.resendButton}
-              onPress={handleSendOtp}
-              disabled={sendingOtp}
+              style={[styles.resendButton, resendTimer > 0 && styles.resendButtonDisabled]}
+              onPress={handleResendOTP}
+              disabled={sendingOtp || resendTimer > 0}
             >
               {sendingOtp ? (
                 <ActivityIndicator color="#dc2626" size="small" />
               ) : (
-                <Text style={styles.resendText}>Resend OTP</Text>
+                <Text style={[styles.resendText, resendTimer > 0 && styles.resendTextDisabled]}>
+                  {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : 'Resend OTP'}
+                </Text>
               )}
             </TouchableOpacity>
 
             {/* Back Button */}
             <TouchableOpacity 
               style={styles.backButton}
-              onPress={() => setOtpStep(false)}
+              onPress={handleBack}
             >
               <Ionicons name="arrow-back" size={20} color="#dc2626" />
               <Text style={styles.backButtonText}>Back to signup</Text>
@@ -280,14 +252,6 @@ const SignupScreen = ({ navigation }) => {
             {/* Signup Form */}
             <Text style={styles.title}>Create account</Text>
             <Text style={styles.subtitle}>Start your trading journey today</Text>
-
-            {/* Email Verified Badge */}
-            {otpVerified && (
-              <View style={styles.verifiedBadge}>
-                <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-                <Text style={styles.verifiedText}>Email verified</Text>
-              </View>
-            )}
 
             {/* Name Input */}
             <View style={styles.inputContainer}>
@@ -302,7 +266,7 @@ const SignupScreen = ({ navigation }) => {
             </View>
 
             {/* Email Input */}
-            <View style={[styles.inputContainer, otpVerified && styles.inputDisabled]}>
+            <View style={styles.inputContainer}>
               <Ionicons name="mail-outline" size={20} color="#666" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
@@ -312,11 +276,7 @@ const SignupScreen = ({ navigation }) => {
                 autoCapitalize="none"
                 value={formData.email}
                 onChangeText={(text) => setFormData({ ...formData, email: text })}
-                editable={!otpVerified}
               />
-              {otpVerified && (
-                <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-              )}
             </View>
 
             {/* Phone Input */}
@@ -350,14 +310,14 @@ const SignupScreen = ({ navigation }) => {
 
             {/* Signup Button */}
             <TouchableOpacity 
-              style={[styles.button, (loading || sendingOtp) && styles.buttonDisabled]}
-              onPress={handleSignup}
-              disabled={loading || sendingOtp}
+              style={[styles.button, sendingOtp && styles.buttonDisabled]}
+              onPress={handleSendOTP}
+              disabled={sendingOtp}
             >
-              {(loading || sendingOtp) ? (
+              {sendingOtp ? (
                 <ActivityIndicator color="#000" />
               ) : (
-                <Text style={styles.buttonText}>{otpRequired && !otpVerified ? 'Send OTP' : 'Create account'}</Text>
+                <Text style={styles.buttonText}>Continue</Text>
               )}
             </TouchableOpacity>
 
@@ -555,10 +515,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 12,
   },
+  resendButtonDisabled: {
+    opacity: 0.6,
+  },
   resendText: {
     color: '#dc2626',
     fontSize: 15,
     fontWeight: '600',
+  },
+  resendTextDisabled: {
+    color: '#666',
   },
   backButton: {
     flexDirection: 'row',
