@@ -8,6 +8,8 @@ import {
   RefreshControl,
   ActivityIndicator,
   Alert,
+  Modal,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
@@ -31,6 +33,11 @@ const OrderBookScreen = ({ navigation }) => {
   const [closedTrades, setClosedTrades] = useState([]);
   const [livePrices, setLivePrices] = useState({});
   const [showAccountPicker, setShowAccountPicker] = useState(false);
+  const [historyFilter, setHistoryFilter] = useState('month'); // all, today, week, month, year, custom
+  const [customStartDate, setCustomStartDate] = useState('');
+  const [customEndDate, setCustomEndDate] = useState('');
+  const [showFromDatePicker, setShowFromDatePicker] = useState(false);
+  const [showToDatePicker, setShowToDatePicker] = useState(false);
 
   useEffect(() => {
     loadUserAndData();
@@ -235,6 +242,68 @@ const OrderBookScreen = ({ navigation }) => {
 
   const getTotalPnl = () => {
     return openTrades.reduce((sum, trade) => sum + calculateFloatingPnl(trade), 0);
+  };
+
+  const getFilteredHistory = () => {
+    const now = new Date();
+    return closedTrades.filter(trade => {
+      if (historyFilter === 'all') return true;
+      const tradeDate = new Date(trade.closedAt);
+      if (historyFilter === 'today') {
+        return tradeDate.toDateString() === now.toDateString();
+      }
+      if (historyFilter === 'week') {
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        return tradeDate >= weekAgo;
+      }
+      if (historyFilter === 'month') {
+        const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        return tradeDate >= monthAgo;
+      }
+      if (historyFilter === 'year') {
+        const yearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+        return tradeDate >= yearAgo;
+      }
+      if (historyFilter === 'custom' && customStartDate) {
+        const startDate = new Date(customStartDate);
+        startDate.setHours(0, 0, 0, 0);
+        const endDate = customEndDate ? new Date(customEndDate) : new Date();
+        endDate.setHours(23, 59, 59, 999);
+        return tradeDate >= startDate && tradeDate <= endDate;
+      }
+      return true;
+    });
+  };
+
+  const formatDateDisplay = (dateStr) => {
+    if (!dateStr) return 'dd/mm/yyyy';
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const getWinRate = () => {
+    const filtered = getFilteredHistory();
+    if (filtered.length === 0) return 0;
+    const wins = filtered.filter(t => (t.realizedPnl || 0) > 0).length;
+    return Math.round((wins / filtered.length) * 100);
+  };
+
+  const generateDateOptions = () => {
+    const options = [];
+    const today = new Date();
+    for (let i = 0; i < 365; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      options.push(date.toISOString().split('T')[0]);
+    }
+    return options;
+  };
+
+  const getHistoryTotalPnl = () => {
+    return getFilteredHistory().reduce((sum, trade) => sum + (trade.realizedPnl || 0), 0);
   };
 
   const closeTrade = async (trade) => {
@@ -601,19 +670,180 @@ const OrderBookScreen = ({ navigation }) => {
             )}
 
             {activeTab === 'history' && (
-              closedTrades.length === 0 ? (
-                <View style={styles.emptyState}>
-                  <Ionicons name="document-text-outline" size={48} color={colors.textMuted} />
-                  <Text style={[styles.emptyTitle, { color: colors.textPrimary }]}>No Trade History</Text>
-                  <Text style={[styles.emptyText, { color: colors.textMuted }]}>Your closed trades will appear here</Text>
+              <>
+                {/* Date Range Picker */}
+                <View style={styles.dateRangeContainer}>
+                  <View style={styles.dateRangeRow}>
+                    <View style={styles.datePickerCol}>
+                      <Text style={[styles.dateLabel, { color: colors.textMuted }]}>From:</Text>
+                      <TouchableOpacity 
+                        style={[styles.datePickerBtn, { backgroundColor: colors.bgCard, borderColor: colors.border }]}
+                        onPress={() => setShowFromDatePicker(true)}
+                      >
+                        <Text style={[styles.datePickerText, { color: customStartDate ? colors.textPrimary : colors.textMuted }]}>
+                          {formatDateDisplay(customStartDate)}
+                        </Text>
+                        <Ionicons name="calendar-outline" size={18} color={colors.textMuted} />
+                      </TouchableOpacity>
+                    </View>
+                    <Text style={[styles.dateRangeTo, { color: colors.textMuted }]}>to</Text>
+                    <View style={styles.datePickerCol}>
+                      <Text style={[styles.dateLabel, { color: colors.textMuted }]}>To:</Text>
+                      <TouchableOpacity 
+                        style={[styles.datePickerBtn, { backgroundColor: colors.bgCard, borderColor: colors.border }]}
+                        onPress={() => setShowToDatePicker(true)}
+                      >
+                        <Text style={[styles.datePickerText, { color: customEndDate ? colors.textPrimary : colors.textMuted }]}>
+                          {formatDateDisplay(customEndDate)}
+                        </Text>
+                        <Ionicons name="calendar-outline" size={18} color={colors.textMuted} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
-              ) : (
-                closedTrades.slice(0, 50).map(trade => renderHistoryItem(trade))
-              )
+
+                {/* History Filter Tabs */}
+                <View style={styles.historyFilterContainer}>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.historyFilterScroll}>
+                    {[
+                      { key: 'all', label: 'All' },
+                      { key: 'today', label: 'Today' },
+                      { key: 'week', label: 'This Week' },
+                      { key: 'month', label: 'This Month' },
+                    ].map(filter => (
+                      <TouchableOpacity
+                        key={filter.key}
+                        style={[
+                          styles.historyFilterBtn,
+                          { backgroundColor: colors.bgCard, borderColor: colors.border },
+                          historyFilter === filter.key && styles.historyFilterBtnActive
+                        ]}
+                        onPress={() => {
+                          setHistoryFilter(filter.key);
+                          if (filter.key !== 'custom') {
+                            setCustomStartDate('');
+                            setCustomEndDate('');
+                          }
+                        }}
+                      >
+                        <Text style={[
+                          styles.historyFilterText,
+                          { color: colors.textMuted },
+                          historyFilter === filter.key && styles.historyFilterTextActive
+                        ]}>
+                          {filter.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+
+                {/* History Summary */}
+                <View style={[styles.historySummaryBar, { backgroundColor: colors.bgCard }]}>
+                  <View>
+                    <Text style={[styles.summaryLabel, { color: colors.textMuted }]}>Period P/L</Text>
+                    <Text style={[styles.summarySubLabel, { color: colors.textMuted }]}>
+                      {getFilteredHistory().length} trades
+                    </Text>
+                  </View>
+                  <View style={styles.summaryRight}>
+                    <Text style={[styles.summaryValue, { color: getHistoryTotalPnl() >= 0 ? '#22c55e' : '#ef4444' }]}>
+                      {getHistoryTotalPnl() >= 0 ? '+' : ''}${getHistoryTotalPnl().toFixed(2)}
+                    </Text>
+                    <Text style={[styles.winRateText, { color: getWinRate() >= 50 ? '#22c55e' : '#ef4444' }]}>
+                      Win Rate: {getWinRate()}%
+                    </Text>
+                  </View>
+                </View>
+
+                {getFilteredHistory().length === 0 ? (
+                  <View style={styles.emptyState}>
+                    <Ionicons name="document-text-outline" size={48} color={colors.textMuted} />
+                    <Text style={[styles.emptyTitle, { color: colors.textPrimary }]}>No trades for selected period</Text>
+                    <Text style={[styles.emptyText, { color: colors.textMuted }]}>
+                      {historyFilter === 'custom' ? 'Try selecting a different date range' : 'Your closed trades will appear here'}
+                    </Text>
+                  </View>
+                ) : (
+                  getFilteredHistory().slice(0, 50).map(trade => renderHistoryItem(trade))
+                )}
+              </>
             )}
           </>
         )}
       </ScrollView>
+
+      {/* From Date Picker Modal */}
+      <Modal visible={showFromDatePicker} transparent animationType="slide" onRequestClose={() => setShowFromDatePicker(false)}>
+        <View style={styles.dateModalOverlay}>
+          <View style={[styles.dateModalContent, { backgroundColor: colors.bgCard }]}>
+            <View style={styles.dateModalHeader}>
+              <Text style={[styles.dateModalTitle, { color: colors.textPrimary }]}>Select Start Date</Text>
+              <TouchableOpacity onPress={() => setShowFromDatePicker(false)}>
+                <Ionicons name="close" size={24} color={colors.textPrimary} />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={styles.dateOptionsList}>
+              {generateDateOptions().map((date, index) => {
+                const d = new Date(date);
+                const isSelected = customStartDate === date;
+                return (
+                  <TouchableOpacity
+                    key={date}
+                    style={[styles.dateOption, isSelected && { backgroundColor: '#3b82f620' }]}
+                    onPress={() => {
+                      setCustomStartDate(date);
+                      setHistoryFilter('custom');
+                      setShowFromDatePicker(false);
+                    }}
+                  >
+                    <Text style={[styles.dateOptionText, { color: isSelected ? '#3b82f6' : colors.textPrimary }]}>
+                      {d.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })}
+                    </Text>
+                    {isSelected && <Ionicons name="checkmark" size={20} color="#3b82f6" />}
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* To Date Picker Modal */}
+      <Modal visible={showToDatePicker} transparent animationType="slide" onRequestClose={() => setShowToDatePicker(false)}>
+        <View style={styles.dateModalOverlay}>
+          <View style={[styles.dateModalContent, { backgroundColor: colors.bgCard }]}>
+            <View style={styles.dateModalHeader}>
+              <Text style={[styles.dateModalTitle, { color: colors.textPrimary }]}>Select End Date</Text>
+              <TouchableOpacity onPress={() => setShowToDatePicker(false)}>
+                <Ionicons name="close" size={24} color={colors.textPrimary} />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={styles.dateOptionsList}>
+              {generateDateOptions().map((date, index) => {
+                const d = new Date(date);
+                const isSelected = customEndDate === date;
+                return (
+                  <TouchableOpacity
+                    key={date}
+                    style={[styles.dateOption, isSelected && { backgroundColor: '#3b82f620' }]}
+                    onPress={() => {
+                      setCustomEndDate(date);
+                      setHistoryFilter('custom');
+                      setShowToDatePicker(false);
+                    }}
+                  >
+                    <Text style={[styles.dateOptionText, { color: isSelected ? '#3b82f6' : colors.textPrimary }]}>
+                      {d.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })}
+                    </Text>
+                    {isSelected && <Ionicons name="checkmark" size={20} color="#3b82f6" />}
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -759,6 +989,118 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 14,
     marginTop: 8,
+  },
+  historyFilterContainer: {
+    marginBottom: 12,
+  },
+  historyFilterScroll: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  historyFilterBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+  },
+  historyFilterBtnActive: {
+    backgroundColor: '#22c55e',
+    borderColor: '#22c55e',
+  },
+  historyFilterText: {
+    fontSize: 13,
+    fontWeight: '500',
+  },
+  historyFilterTextActive: {
+    color: '#000',
+  },
+  historySummaryBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  summarySubLabel: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  summaryRight: {
+    alignItems: 'flex-end',
+  },
+  winRateText: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  dateRangeContainer: {
+    marginBottom: 12,
+  },
+  dateRangeRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: 8,
+  },
+  datePickerCol: {
+    flex: 1,
+  },
+  dateLabel: {
+    fontSize: 12,
+    marginBottom: 6,
+  },
+  datePickerBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  datePickerText: {
+    fontSize: 14,
+  },
+  dateRangeTo: {
+    paddingBottom: 14,
+    fontSize: 14,
+  },
+  dateModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'flex-end',
+  },
+  dateModalContent: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '70%',
+  },
+  dateModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  dateModalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  dateOptionsList: {
+    maxHeight: 400,
+  },
+  dateOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#222',
+  },
+  dateOptionText: {
+    fontSize: 15,
   },
   tradeCard: {
     borderRadius: 12,
